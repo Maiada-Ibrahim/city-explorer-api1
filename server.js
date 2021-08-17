@@ -6,6 +6,8 @@ require('dotenv').config();
 const wetherdata =require('./data/wether.json');
 const server= express();
 const PORT = process.env.PORT;
+const cors = require('cors')
+server.use(cors());
 
 server.listen( PORT,()=>{
 console.log(`listning on port ${PORT}`)
