@@ -2,10 +2,10 @@
 
 const { request, response } = require('express');
 const express =require('express');
+require('dotenv').config();
 const wetherdata =require('./data/wether.json');
 const server= express();
-
-const PORT =3001;
+const PORT = process.env.PORT;
 
 server.listen( PORT,()=>{
 console.log(`listning on port ${PORT}`)
