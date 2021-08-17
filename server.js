@@ -3,6 +3,7 @@
 const { request, response } = require('express');
 const express = require('express');
 require('dotenv').config();
+const axios = require('axios')
 const wetherdata = require('./data/wether.json');
 const server = express();
 const PORT = process.env.PORT;
@@ -14,20 +15,11 @@ server.listen(PORT, () => {
 })
 class Forcast {
     constructor(item) {
-        this.data = item.datetime
+        this.data =item.datetime
         this.description = item.weather.description
     }
 
 }
-//localhost:3001/test
-server.get('/test', (request, response) => {
-    response.send('your server is working')
-
-})
-//localhost:3001/
-server.get('/', (request, response) => {
-    response.send('home route')
-})
 
 
 
@@ -51,23 +43,29 @@ server.get('/', (request, response) => {
 
 
 // })
+server.get('/', homeHandler);
+// Function Handlers
+function homeHandler (req, res) {
+    res.send('all good')}
 
-server.get('/wether', getwhether)
-function getwhether(req, res) {
-    let lat = request.query.lat
-    let lon = request.query.lon
-    let url = `https://api.weatherbit.io/v2.0/current?lat=35.7796&lon=-78.6382&key=API_KEY&include=minutely`
+server.get('/whethertoday', getwhether)
+function getwhether (req, res) {
+    let lat = req.query.lat
+    console.log(lat)
+    let lon = req.query.lon
+    let url = `https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}`
     
     console.log('before axios');
-    try {
-        axios.get(url).then((photoResults) => {
+    try  {
+        axios.get(url).then((whetherResults) => {
             console.log('inside axios');
 
-            // console.log(photoResults.data)
-            let photoArray = photoResults.data.results.map(photo => {
-                return new Photo(photo)
+            console.log(whetherResults.data)
+            let wetherArray = whetherResults.data.map(item => {
+                return new Forcast(item)
             })
-            res.send(photoArray)
+            res.send(whetherResults)
+            // console.log(wetherArray)
         })
     }
     catch (error) {
@@ -85,3 +83,4 @@ server.get('*', (req, res) => {
 })
 
 
+//http://localhost:3001/whethertoday?&lat=47.6038321&lon=-122.3300624
