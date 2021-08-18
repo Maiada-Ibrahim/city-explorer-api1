@@ -9,6 +9,8 @@ const server = express();
 const PORT = process.env.PORT;
 const cors = require('cors')
 server.use(cors());
+const handleMovie = require('./modules/movies.js')
+
 
 server.listen(PORT, () => {
     console.log(`listning on port ${PORT}`)
@@ -21,20 +23,20 @@ class Forcast {
     }
 
 }
-class Forcastmovies {
-    constructor(item) {
-        this.title =item.original_title
-        this.overview = item.overview
-        this.vote_average=item.vote_average
-        this.vote_count=item.vote_count
-        this.image_url=`https://image.tmdb.org/t/p/w500/${item.poster_path}`
-        this.popularity=item.popularity
-        this.release_date=item.release_date
+// class Forcastmovies {
+//     constructor(item) {
+//         this.title =item.original_title
+//         this.overview = item.overview
+//         this.vote_average=item.vote_average
+//         this.vote_count=item.vote_count
+//         this.image_url=`https://image.tmdb.org/t/p/w500/${item.poster_path}`
+//         this.popularity=item.popularity
+//         this.release_date=item.release_date
 
 
-    }
+//     }
 
-}
+// }
 server.get('/', homeHandler);
 // Function Handlers
 function homeHandler (req, res) {
@@ -77,34 +79,35 @@ function getwhether (req, res) {
 }
 
 
-//--------------------------------------------------------------------------------------------------------------------------
-// http://localhost:3001/movies?&query=jone
-server.get('/movies', getmovies)
-function getmovies (req, res) {
-    let cityname = req.query.cityname
-    // console.log(moviesname)
-    let url =`https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIES_API_KEY}&query=${cityname}`
-    console.log('before axios');
-    try  {
-        axios.get(url).then((moviesResults) => {
-            console.log('inside axios');
+// //--------------------------------------------------------------------------------------------------------------------------
+// // http://localhost:3001/movies?&query=jone
+// server.get('/movies', getmovies)
+// function getmovies (req, res) {
+//     let cityname = req.query.cityname
+//     // console.log(moviesname)
+//     let url =`https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIES_API_KEY}&query=${cityname}`
+//     console.log('before axios');
+//     try  {
+//         axios.get(url).then((moviesResults) => {
+//             console.log('inside axios');
 
-            console.log('first',moviesResults.data)
-            let moviesArray = moviesResults.data.results.map(item => {
-                return new Forcastmovies(item)
-            })
-            res.send(moviesArray)
-            console.log('moviesarray',moviesArray)
-        })
-    }
-    catch (error) {
-        console.log('error from axios', error)
-        res.send(error)
-    }
+//             console.log('first',moviesResults.data)
+//             let moviesArray = moviesResults.data.results.map(item => {
+//                 return new Forcastmovies(item)
+//             })
+//             res.send(moviesArray)
+//             console.log('moviesarray',moviesArray)
+//         })
+//     }
+//     catch (error) {
+//         console.log('error from axios', error)
+//         res.send(error)
+//     }
 
-    console.log('after axios');
+//     console.log('after axios');
 
-}
+// }
+server.get('/movies', handleMovie)
 server.get('*', (req, res) => {
     res.status(500).send('not found')
 })
