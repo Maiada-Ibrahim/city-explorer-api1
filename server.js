@@ -19,6 +19,7 @@ class Forcast {
     }
 
 }
+
 //localhost:3001/test
 server.get('/test', (request, response) => {
     response.send('your server is working')
@@ -28,15 +29,11 @@ server.get('/test', (request, response) => {
 server.get('/', (request, response) => {
     response.send('home route')
 })
-
-
-
-
+// http://localhost:3001/whethercity?city_name=amman
 server.get('/whethercity', (request, response) => {
-    // let lat = request.query.lat
-    // let lon = request.query.lon
     let city_name = request.query.city_name
-    let whether = wetherdata.find(value => {
+    console.log('before search');
+    try { let whether = wetherdata.find(value => {
         if (value.city_name.toLowerCase() == city_name.toLowerCase()) {return value }
     })
 
@@ -47,12 +44,20 @@ server.get('/whethercity', (request, response) => {
         return new Forcast(item)
     })
     response.send(Forcastarray)
+    }
+    catch (error) {
+        console.log('Something went wrong', error)
+        response.status(500).send('Something went wrong')
+    }
+
+    console.log('after search');
 
 
+})   
 
-})
+
 server.get('*', (req, res) => {
-    res.status(500).send('not found')
+    res.status(500).send('Something went wrong.')
 })
 
 
