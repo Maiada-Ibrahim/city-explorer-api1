@@ -2,9 +2,9 @@ const axios = require('axios');
 module.exports = handleMovie; 
 
 //--------------------------------------------------------------------------------------------------------------------------
-// http://localhost:3001/movies?&query=jone
+// http://localhost:3001/movies?&cityname=amman
 
-function getmovies (req, res) {
+function handleMovie (req, res) {
     let cityname = req.query.cityname
     // console.log(moviesname)
     let url =`https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIES_API_KEY}&query=${cityname}`
