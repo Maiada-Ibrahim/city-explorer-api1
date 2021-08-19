@@ -13,17 +13,17 @@ function handleweather (req, res) {
 
 
     
-    console.log('before axios');
+   // console.log('before axios');
     try  {
         axios.get(url).then((whetherResults) => {
-            console.log('inside axios');
+       //     console.log('inside axios');
 
-            console.log(whetherResults.data.data)
+        //    console.log(whetherResults.data.data)
             let wetherArray = whetherResults.data.data.map(item => {
                 return new Forcast(item)
             })
             res.send(wetherArray)
-            console.log(wetherArray)
+          //  console.log(wetherArray)
         })
     }
     catch (error) {
@@ -31,7 +31,7 @@ function handleweather (req, res) {
         res.send(error)
     }
 
-    console.log('after axios');
+   // console.log('after axios');
 
 }
 

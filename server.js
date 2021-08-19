@@ -12,15 +12,19 @@ server.use(cors());
 const handleMovie = require('./modules/movies')
 const handleweather = require('./modules/weather')
 
+
+
+
+
 server.listen(PORT, () => {
     console.log(`listning on port ${PORT}`)
 })
-
+//-------------
 server.get('/', homeHandler);
 // Function Handlers
 function homeHandler (req, res) {
     res.send('all good')}
-    
+ //-----------------------------   
 server.get('/weather', handleweather)
 server.get('/movies', handleMovie)
 server.get('*', (req, res) => {
